@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+    <title>Dwitter</title>
+</head>
+
+<body>
+    <section class="hero is-small is-info mb-4">
+        <div class="hero-head">
+            <nav class="navbar">
+                <div class="container">
+                    <div class="navbar-brand">
+                        <a class="navbar-item" href="{% url 'dashboard' %}">
+                            <h1 class="title is-1">Dwitter</h1>
+                        </a>
+                        <span class="navbar-burger" data-target="navbarMenuHeroA">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </span>
+                    </div>
+                    <div id="navbarMenuHeroA" class="navbar-menu">
+                        <div class="navbar-end">
+
+                            <span class="navbar-item">
+                                <form method="get" action="{% url 'search' %}">
+                                    <div class="field has-addons">
+                                        <div class="control">
+                                            <input class="input" name="search" type="text" placeholder="Search dwitter">
+                                        </div>
+                                        <div class="control">
+                                            <button name="type" value="search_user" class="button is-info"
+                                                type="submit">Go</button>
+                                        </div>
+                                    </div>
+                                </form>
+
+                            </span>
+
+                            <div class="navbar-item">
+                                {% if user.is_authenticated %}
+                                <div class="dropdown">
+                                    <div class="dropdown-trigger">
+                                        <button class="button is-info" aria-haspopup="true" aria-controls="dropdown-menu">
+                                            
+                                            <span>{{user.username}}</span>
+                                            <span class="icon is-small">
+                                                <i class="fa fa-angle-down" aria-hidden="true"></i>
+                                            </span>
+                                        </button>
+                                    </div>
+                                    <div class="dropdown-menu" id="dropdown-menu" role="menu">
+                                        <div class="dropdown-content">
+                                            <a href="{% url 'profile' user.username %}" class="dropdown-item">Profile</a>
+                                            <hr class="dropdown-divider">
+                                            <a class="dropdown-item">Logout</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% else %} 
+                                <button class = "button is-info"><a href = "#">Sign Up</a></button>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </div>
+
+
+        <div class="hero-body">
+            <p class="subtitle is-4">
+                Your tiny social network built with Django
+            </p>
+        </div>
+    </section>
+
+
+    <div class="container">
+        <div class="columns">
+
+            {% block content %}
+
+            {% endblock content %}
+
+        </div>
+    </div>
+
+    <script>
+        // Function to open the modal
+        function openModal() {
+            // Add is-active class on the modal
+            document.getElementById("modal1")
+                .classList.add("is-active");
+        }
+
+        // Function to close the modal
+        function closeModal() {
+            document.getElementById("modal1")
+                .classList.remove("is-active");
+        }
+
+        function openModal2() {
+            // Add is-active class on the modal
+            document.getElementById("modal2")
+                .classList.add("is-active");
+        }
+
+        // Function to close the modal
+        function closeModal2() {
+            document.getElementById("modal2")
+                .classList.remove("is-active");
+        }
+
+        // Add event listeners to close the modal
+        // whenever user click outside modal
+        document.querySelectorAll(
+            ".modal-background, .modal-close,.modal-card-head .delete, .modal-card-foot .button"
+        ).forEach(($el) => {
+            const $modal = $el.closest(".modal");
+            $el.addEventListener("click", () => {
+
+                // Remove the is-active class from the modal
+                $modal.classList.remove("is-active");
+            });
+        });
+
+        // Adding keyboard event listeners to close the modal
+        document.addEventListener("keydown", (event) => {
+            const e = event || window.event;
+            if (e.keyCode === 27) {
+
+                // Using escape key
+                closeModal();
+                closeModal2();
+            }
+        });
+
+
+        //DOMContentLoaded - it fires when initial HTML document has been completely loaded
+        document.addEventListener('DOMContentLoaded', function () {
+            // querySelector - it returns the element within the document that matches the specified selector
+            var dropdown = document.querySelector('.dropdown');
+
+            //addEventListener - attaches an event handler to the specified element.
+            dropdown.addEventListener('click', function (event) {
+
+                //event.stopPropagation() - it stops the bubbling of an event to parent elements, by preventing parent event handlers from being executed
+                event.stopPropagation();
+
+                //classList.toggle - it toggles between adding and removing a class name from an element
+                dropdown.classList.toggle('is-active');
+            });
+        }); 
+    </script>
+</body>
+
+</html>

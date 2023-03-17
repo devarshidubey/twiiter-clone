@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="column">
+
+
+  {% for dweet in dweets %}
+  <div class="column is-half is-offset-one-quarter">
+    <div class="box">
+      {% if dweet.user == user %}
+      <div class="is-flex is-justify-content-flex-end">
+
+        <div class="modal" id="modal1">
+          <div class="modal-background"></div>
+          <div class="modal-card">
+            <header class="modal-card-head">
+              <p class="modal-card-title">
+                Confirm
+              </p>
+              <button class="delete" aria-label="close">
+              </button>
+            </header>
+            <section class="modal-card-body">
+
+              <div class="block">
+                Are you sure you want to delete this post?
+              </div>
+
+            </section>
+            <footer class="modal-card-foot">
+              <form action="{% url 'delete' dweet.pk %}" method="post">
+                {% csrf_token %}
+                <button name="url" value="dashboard" method="submit" class="button is-danger">Yes</button>
+              </form>
+            </footer>
+          </div>
+        </div>
+
+        <!-- Modal button for trigger -->
+        <button onclick="openModal();" class="delete">
+        </button>
+
+
+      </div>
+      {% endif %}
+      <a href="{% url 'profile' dweet.user.username %}"><b>{{ dweet.user.username }}</b></a>
+      <br>
+      {{ dweet.body }}
+      <span class="is-small has-text-grey-light">
+        ({{ dweet.created_at }})
+      </span>
+    </div>
+  </div>
+
+  {% endfor %}
+</div>
+
+<div class="column is-one-quarter">
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" name="type" value="dweet" class="button is-info is-fullwidth is-medium mt-5">Dweet</button>
+  </form>
+</div>
+
+
+{% endblock content %}

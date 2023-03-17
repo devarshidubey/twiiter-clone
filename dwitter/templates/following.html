@@ -1,0 +1,58 @@
+{% extends "profile.html" %}
+
+{% block following %}
+<div class="block">
+    <div class="container">
+        <div class="modal" id="modal1">
+            <div class="modal-background"></div>
+            <div class="modal-card">
+                <header class="modal-card-head">
+                    <p class="modal-card-title">
+                        Following
+                    </p>
+                    <button class="delete" aria-label="close">
+                    </button>
+                </header>
+                <section class="modal-card-body">
+                    {% for following in profile.follows.all %}
+                    <div class="block">
+                        <div class="card">
+                            <a href="{% url 'profile' following.user %}">
+                                <div class="card-content">
+                                    <div class="media">
+                                        <div class="media-left">
+                                            <figure class="image is-48x48">
+                                                <img src="https://bulma.io/images/placeholders/96x96.png"
+                                                    alt="Placeholder image">
+                                            </figure>
+                                        </div>
+                                        <div class="media-content">
+                                            <p class="title is-4">
+                                                {{ following.user.username }}
+                                            </p>
+                                            <p class="subtitle is-6">
+                                                @{{ following.user.username|lower }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </section>
+                <footer class="modal-card-foot">
+                    <button class="button is-danger">
+                        Cancel
+                    </button>
+                </footer>
+            </div>
+        </div>
+
+        <!-- Modal button for trigger -->
+        <button onclick="openModal();" class="button is-success">
+            {{ profile.follows.count}} following
+        </button>
+    </div>
+</div>
+{% endblock following %}
