@@ -27,10 +27,17 @@ class Dweet(models.Model):
     liked_by = models.ManyToManyField(
         User,
         related_name = "liked",
-        blank = True
+        blank = True,
+        null = True
     )
     created_at = models.DateTimeField(auto_now_add = True)
-
+    parent = models.ForeignKey(
+        "self",
+        related_name = "child",
+        on_delete = models.DO_NOTHING,
+        blank = True,
+        null = True
+    )
     def __str__(self):
         return (
             f"{self.user} "

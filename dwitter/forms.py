@@ -15,4 +15,4 @@ class DweetForm(forms.ModelForm):
 
     class Meta:
         model = Dweet
-        exclude = ("user", "liked_by")
+        exclude = ("user", "liked_by", "parent")

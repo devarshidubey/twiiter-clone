@@ -7,6 +7,33 @@ from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from django.http import Http404
 
+@login_required
+def like_view(request, pk):
+    dweet = Dweet.objects.get(pk = pk)
+    if request.user not in dweet.liked_by.all():
+        dweet.liked_by.add(request.user)
+    else:
+        dweet.liked_by.remove(request.user)
+    dweet.save()
+    return redirect("dashboard")
+
+@login_required
+def detail_view(request, pk):
+    context = {}
+    dweet = Dweet.objects.get(pk = pk)
+    if request.method == "POST":
+        form = DweetForm(request.POST)
+        if form.is_valid():
+            new = form.save(commit = False)
+            new.user = request.user
+            new.parent = dweet
+            new.save()
+            return redirect("dashboard")
+    else:
+        form = DweetForm()
+    context["dweet"] = dweet
+    context["form"] = form
+    return render(request, "dweet_detail.html", context)
 
 @login_required
 def delete_view(request, pk):
